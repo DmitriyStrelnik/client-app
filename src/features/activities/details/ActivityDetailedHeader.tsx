@@ -25,6 +25,62 @@ const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
   const host = activity.attendees.filter(x => x.isHost)[0];
   const rootStore = useContext(RootStoreContext);
   const { attendActivity, deleteActivity, cancelAttendance, loading, target, submitting } = rootStore.activityStore;
+
+  let buttonBlock = (
+    <Button loading={loading} onClick={attendActivity} color='teal'>
+      Join Activity
+    </Button>
+  );
+
+  if (activity.isHost) {
+    buttonBlock = (
+    <>
+      <Button
+        as={Link}
+        to={`/manage/${activity.id}`}
+        color='orange'
+        floated='right'
+      >
+      Manage Event
+      </Button>
+      <Button
+        name={activity.id}
+        loading={target === activity.id && submitting}
+        onClick={e => deleteActivity(e, activity.id)}
+        color='red'
+        floated='left'
+        content='Delete'
+      />
+    </>
+  )}
+  else if (activity.isAdmin) {
+    buttonBlock = (
+    <>      
+      {activity.isGoing
+        ? <Button loading={loading} onClick={cancelAttendance}>
+          Cancel attendance
+        </Button>
+        : <Button loading={loading} onClick={attendActivity} color='teal'>
+          Join Activity
+        </Button>
+      }
+      <Button
+        name={activity.id}
+        loading={target === activity.id && submitting}
+        onClick={e => deleteActivity(e, activity.id)}
+        color='red'
+        floated='left'
+        content='Delete'
+      />
+    </>
+  )}
+  else if (activity.isGoing) {          
+    buttonBlock = (
+    <Button loading={loading} onClick={cancelAttendance}>
+      Cancel attendance
+    </Button>
+  )}
+
   return (
     <Segment.Group>
       <Segment basic attached='top' style={{ padding: '0' }}>
@@ -55,7 +111,8 @@ const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
         </Segment>
       </Segment>
       <Segment clearing attached='bottom'>
-        {activity.isHost ? (
+      {buttonBlock}
+        {/* { activity.isHost ? (
           <>
            <Button
             as={Link}
@@ -64,8 +121,7 @@ const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
             floated='right'
           >
             Manage Event
-          </Button>
-          
+          </Button>     
           <Button
             name={activity.id}
             loading={target === activity.id && submitting}
@@ -73,20 +129,18 @@ const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
             color='red'
             floated='left'
             content='Delete'
-          />
-           
-          </>
-         
+          />          
+          </> 
         )
-         : activity.isGoing ? (
+         : activity.isGoing ? (           
           <Button loading={loading} onClick={cancelAttendance}>
             Cancel attendance
           </Button>
-        ) : (
+        )  : (
           <Button loading={loading} onClick={attendActivity} color='teal'>
             Join Activity
           </Button>
-        )}
+        )} */}
       </Segment>
     </Segment.Group>
   );

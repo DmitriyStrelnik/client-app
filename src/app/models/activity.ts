@@ -2,7 +2,11 @@ export interface IActivitiesEnvelope {
   activities: IActivity[];
   activityCount: number;
 }
-
+export interface ICategory{
+  key: string;
+  text: string;
+  value: string;
+}
 export interface IActivity {
   id: string;
   title: string;
@@ -14,6 +18,7 @@ export interface IActivity {
   isPrivate: any;
   isGoing: boolean;
   isHost: boolean;
+  isAdmin: boolean;
   attendees: IAttendee[];
   comments: IComment[];
 }

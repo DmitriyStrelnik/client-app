@@ -1,9 +1,9 @@
 import React, { Fragment, useContext } from 'react';
-import { Menu, Header, Search } from 'semantic-ui-react';
+import { Menu, Header, Search, Select } from 'semantic-ui-react';
 import { Calendar } from 'react-widgets';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import { observer } from 'mobx-react-lite';
-
+import { category } from '../../../app/common/options/categoryOptions';
 const ActivityFilters = () => {
   const rootStore = useContext(RootStoreContext);
   const { predicate, setPredicate } = rootStore.activityStore;
@@ -42,6 +42,12 @@ const ActivityFilters = () => {
       <Calendar
         onChange={date => setPredicate('startDate', date!)}
         value={predicate.get('startDate') || new Date()}
+      />
+      <Select 
+        value={predicate.get(category)}
+        onChange={(e, data) => setPredicate('category', data.value)}
+        placeholder='Choose category'
+        options={category}
       />
       <Search
          

@@ -18,6 +18,7 @@ import { RootStoreContext } from '../stores/rootStore';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
+import CategoryForm from '../../features/activities/form/CategoryForm';
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -52,6 +53,11 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   key={location.key}
                   path={['/createActivity', '/manage/:id']}
                   component={ActivityForm}
+                />
+                <Route
+                  key={location.key}
+                  path={['/createCategory', '/manage/:id']}
+                  component={CategoryForm}
                 />
                 <Route path='/profile/:username' component={ProfilePage} />
                 <Route component={NotFound} />

@@ -20,6 +20,8 @@ export const setActivityProps = (activity: IActivity, user: IUser) => {
     activity.isHost = activity.attendees.some(
       a => a.username === user.username && a.isHost
     )
+    activity.isAdmin= user.isAdmin
+    
     return activity;
 }
 

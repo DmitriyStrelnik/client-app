@@ -1,13 +1,13 @@
 import { observable, action, computed, runInAction, reaction } from 'mobx';
 import { SyntheticEvent } from 'react';
-import { IActivity } from '../models/activity';
+import { IActivity, ICategory } from '../models/activity';
 import agent from '../api/agent';
 import { history } from '../..';
 import { toast } from 'react-toastify';
 import { RootStore } from './rootStore';
 import { setActivityProps, createAttendee } from '../common/util/util';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
-
+import { category } from '../common/options/categoryOptions';
 const LIMIT = 2;
 
 export default class ActivityStore {
@@ -36,7 +36,7 @@ export default class ActivityStore {
   @observable page = 0;
   @observable predicate = new Map();
 
-  @action setPredicate = (predicate: string, value: string | Date) => {
+  @action setPredicate = (predicate: string, value: string | number | boolean | (string | number | boolean)[] | Date | undefined) => {
     this.predicate.clear();
     if (predicate !== 'all') {
       this.predicate.set(predicate, value);
@@ -199,6 +199,17 @@ export default class ActivityStore {
       console.log(error.response);
     }
   };
+
+  @action createCategory  = async (newCategory: ICategory) =>
+  {
+    
+    category.push(newCategory)
+  }
+  @action editCategory  = async (newCategory: ICategory) =>
+  {
+    
+    
+  }
 
   @action editActivity = async (activity: IActivity) => {
     this.submitting = true;

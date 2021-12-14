@@ -23,6 +23,15 @@ const NavBar: React.FC = () => {
             content='Create Activity'
           />
         </Menu.Item>
+          <Menu.Item>
+          <Button
+            as={NavLink}
+            to='/createCategory'
+            positive
+            content='Create Category'
+          />
+        
+        </Menu.Item>
         {user && (
           <Menu.Item position='right'>
             <Image avatar spaced='right' src={user.image || '/assets/user.png'} />
