@@ -40,4 +40,16 @@ body {
   font-weight: normal;
 }
 
+.selectCategory {
+  margin: 14px 0;
+  width: 100%;
+}
+
+.searchActivity {
+  width: 100%;
+}
+
+.searchActivity .input {
+  width: 100%;    
+}
 /*end home page styles*/
