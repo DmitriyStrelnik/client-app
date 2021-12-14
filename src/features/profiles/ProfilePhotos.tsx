@@ -13,7 +13,7 @@ const ProfilePhotos = () => {
     uploadingPhoto,
     setMainPhoto,
     deletePhoto,
-    loading
+    loading,
   } = rootStore.profileStore;
   const [addPhotoMode, setAddPhotoMode] = useState(false);
   const [target, setTarget] = useState<string | undefined>(undefined);
@@ -48,13 +48,13 @@ const ProfilePhotos = () => {
           ) : (
             <Card.Group itemsPerRow={5}>
               {profile &&
-                profile.photos.map(photo => (
+                profile.photos.map((photo) => (
                   <Card key={photo.id}>
                     <Image src={photo.url} />
                     {isCurrentUser && (
                       <Button.Group fluid widths={2}>
                         <Button
-                          onClick={e => {
+                          onClick={(e) => {
                             setMainPhoto(photo);
                             setTarget(e.currentTarget.name);
                           }}
@@ -70,7 +70,7 @@ const ProfilePhotos = () => {
                           disabled={photo.isMain}
                           onClick={(e) => {
                             deletePhoto(photo);
-                            setDeleteTarget(e.currentTarget.name)
+                            setDeleteTarget(e.currentTarget.name);
                           }}
                           loading={loading && deleteTarget === photo.id}
                           basic

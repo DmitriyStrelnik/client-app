@@ -1,13 +1,13 @@
 import React from 'react';
-import { Card, Image, Icon} from 'semantic-ui-react';
+import { Card, Image, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { IProfile } from '../../app/models/profile';
 
 interface IProps {
-    profile: IProfile
+  profile: IProfile;
 }
 
-const ProfileCard: React.FC<IProps> = ({profile}) => {
+const ProfileCard: React.FC<IProps> = ({ profile }) => {
   return (
     <Card as={Link} to={`/profile/${profile.username}`}>
       <Image src={profile.image || '/assets/user.png'} />

@@ -4,5 +4,5 @@ export const category = [
   { key: 'film', text: 'Film', value: 'Film' },
   { key: 'food', text: 'Food', value: 'Food' },
   { key: 'music', text: 'Music', value: 'Music' },
-  { key: 'travel', text: 'Travel', value: 'Travel' }
+  { key: 'travel', text: 'Travel', value: 'Travel' },
 ];

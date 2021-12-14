@@ -1,4 +1,11 @@
-import React, { Fragment, useCallback, useContext, useEffect, useReducer, useState } from 'react';
+import React, {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 import { Menu, Header, Search, Select } from 'semantic-ui-react';
 import { Calendar } from 'react-widgets';
 
@@ -28,9 +35,9 @@ const ActivityFilters = () => {
         setIsLoading(false);
         setResults(activities);
       }
-    }, 300)
+    }, 300);
 
-    return () => clearTimeout(delayDebounceFn)
+    return () => clearTimeout(delayDebounceFn);
   }, [value]);
 
   const onChange = (e: any, data: any) => {

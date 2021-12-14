@@ -12,7 +12,7 @@ const validate = combineValidators({
   username: isRequired('Username'),
   displayName: isRequired('DisplayName'),
   email: isRequired('Email'),
-  password: isRequired('Password')
+  password: isRequired('Password'),
 });
 
 const RegisterForm = () => {
@@ -21,8 +21,8 @@ const RegisterForm = () => {
   return (
     <FinalForm
       onSubmit={(values: IUserFormValues) =>
-        register(values).catch(error => ({
-          [FORM_ERROR]: error
+        register(values).catch((error) => ({
+          [FORM_ERROR]: error,
         }))
       }
       validate={validate}
@@ -32,7 +32,7 @@ const RegisterForm = () => {
         submitError,
         invalid,
         pristine,
-        dirtySinceLastSubmit
+        dirtySinceLastSubmit,
       }) => (
         <Form onSubmit={handleSubmit} error>
           <Header
@@ -55,9 +55,7 @@ const RegisterForm = () => {
             type='password'
           />
           {submitError && !dirtySinceLastSubmit && (
-            <ErrorMessage
-              error={submitError}
-            />
+            <ErrorMessage error={submitError} />
           )}
           <Button
             disabled={(invalid && !dirtySinceLastSubmit) || pristine}

@@ -9,17 +9,13 @@ import { RootStoreContext } from '../../app/stores/rootStore';
 const panes = [
   { menuItem: 'Future Events', pane: { key: 'futureEvents' } },
   { menuItem: 'Past Events', pane: { key: 'pastEvents' } },
-  { menuItem: 'Hosting', pane: { key: 'hosted' } }
+  { menuItem: 'Hosting', pane: { key: 'hosted' } },
 ];
 
 const ProfileEvents = () => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    loadUserActivities,
-    profile,
-    loadingActivities,
-    userActivities
-  } = rootStore.profileStore!;
+  const { loadUserActivities, profile, loadingActivities, userActivities } =
+    rootStore.profileStore!;
 
   useEffect(() => {
     loadUserActivities(profile!.username);

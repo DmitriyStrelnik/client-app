@@ -4,7 +4,7 @@ import { CheckboxProps, Form, Label, Checkbox } from 'semantic-ui-react';
 
 interface IProps
   extends Omit<FieldRenderProps<string, HTMLInputElement>, 'input'>,
-  CheckboxProps {}
+    CheckboxProps {}
 
 const CheckBoxInput: React.FC<IProps> = ({
   width,
@@ -25,7 +25,7 @@ const CheckBoxInput: React.FC<IProps> = ({
         {...rest}
         value={value}
         onChange={(evt, { checked }) => {
-          input.onChange({ target: { type: "checkbox", value, checked } });
+          input.onChange({ target: { type: 'checkbox', value, checked } });
         }}
         label='Make activity private'
         placeholder={placeholder}

@@ -12,23 +12,26 @@ const dropzoneStyles = {
   borderRadius: '5px',
   paddingTop: '30px',
   textAlign: 'center' as 'center',
-  height: '200px'
+  height: '200px',
 };
 
 const dropzoneActive = {
-  borderColor: 'green'
+  borderColor: 'green',
 };
 
 const PhotoWidgetDropzone: React.FC<IProps> = ({ setFiles }) => {
-  const onDrop = useCallback(acceptedFiles => {
-    setFiles(
-      acceptedFiles.map((file: object) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })
-      )
-    );
-  }, [setFiles]);
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((file: object) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+    },
+    [setFiles]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (

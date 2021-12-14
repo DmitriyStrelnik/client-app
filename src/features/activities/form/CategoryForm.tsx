@@ -12,14 +12,14 @@ import {
   combineValidators,
   isRequired,
   composeValidators,
-  hasLengthGreaterThan
+  hasLengthGreaterThan,
 } from 'revalidate';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 
 const validate = combineValidators({
   key: isRequired({ message: 'The category title is required' }),
-  text: isRequired({message:'text'}),
-  value: isRequired({message:'Value'})
+  text: isRequired({ message: 'text' }),
+  value: isRequired({ message: 'Value' }),
 });
 
 interface DetailParams {
@@ -28,15 +28,11 @@ interface DetailParams {
 
 const CategoryForm: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
-  history
+  history,
 }) => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    submitting,
-    createCategory,
-    editCategory,
-    loadActivity
-  } = rootStore.activityStore;
+  const { submitting, createCategory, editCategory, loadActivity } =
+    rootStore.activityStore;
 
   const [activity, setActivity] = useState(new ActivityFormValues());
   const [loading, setLoading] = useState(false);
@@ -45,7 +41,7 @@ const CategoryForm: React.FC<RouteComponentProps<DetailParams>> = ({
     if (match.params.id) {
       setLoading(true);
       loadActivity(match.params.id)
-        .then(activity => {
+        .then((activity) => {
           setActivity(new ActivityFormValues(activity));
         })
         .finally(() => setLoading(false));
@@ -53,12 +49,12 @@ const CategoryForm: React.FC<RouteComponentProps<DetailParams>> = ({
   }, [loadActivity, match.params.id]);
 
   const handleFinalFormSubmit = (values: any) => {
-    const {  ...category } = values;
+    const { ...category } = values;
     console.log(category);
     if (!category.id) {
       let newCategory = {
         ...category,
-        id: uuid()
+        id: uuid(),
       };
       createCategory(newCategory);
     } else {
@@ -76,29 +72,17 @@ const CategoryForm: React.FC<RouteComponentProps<DetailParams>> = ({
             onSubmit={handleFinalFormSubmit}
             render={({ handleSubmit, invalid, pristine }) => (
               <Form onSubmit={handleSubmit} loading={loading}>
-                <Field
-                  name='key'
-                  placeholder='Key'
-                  component={TextInput}
-                />
-                <Field
-                  name='text'
-                  placeholder='Text'
-                  component={TextInput}
-                />
-                <Field
-                name='value'
-                placeholder='value'
-                component={TextInput}
-              /> 
-                 <Button
+                <Field name='key' placeholder='Key' component={TextInput} />
+                <Field name='text' placeholder='Text' component={TextInput} />
+                <Field name='value' placeholder='value' component={TextInput} />
+                <Button
                   loading={submitting}
                   disabled={loading || invalid || pristine}
                   floated='right'
                   positive
                   type='submit'
                   content='Submit'
-                />            
+                />
                 <Button
                   onClick={
                     activity.id
@@ -120,4 +104,3 @@ const CategoryForm: React.FC<RouteComponentProps<DetailParams>> = ({
 };
 
 export default observer(CategoryForm);
-

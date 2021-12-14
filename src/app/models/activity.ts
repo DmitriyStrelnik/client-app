@@ -2,7 +2,7 @@ export interface IActivitiesEnvelope {
   activities: IActivity[];
   activityCount: number;
 }
-export interface ICategory{
+export interface ICategory {
   key: string;
   text: string;
   value: string;

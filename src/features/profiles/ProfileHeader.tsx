@@ -7,7 +7,7 @@ import {
   Grid,
   Statistic,
   Divider,
-  Reveal
+  Reveal,
 } from 'semantic-ui-react';
 import { IProfile } from '../../app/models/profile';
 import { observer } from 'mobx-react-lite';
@@ -25,7 +25,7 @@ const ProfileHeader: React.FC<IProps> = ({
   isCurrentUser,
   loading,
   follow,
-  unfollow
+  unfollow,
 }) => {
   return (
     <Segment>

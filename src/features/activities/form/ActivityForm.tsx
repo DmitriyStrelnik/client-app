@@ -16,7 +16,7 @@ import {
   combineValidators,
   isRequired,
   composeValidators,
-  hasLengthGreaterThan
+  hasLengthGreaterThan,
 } from 'revalidate';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 
@@ -26,13 +26,13 @@ const validate = combineValidators({
   description: composeValidators(
     isRequired('Description'),
     hasLengthGreaterThan(4)({
-      message: 'Description needs to be at least 5 characters'
+      message: 'Description needs to be at least 5 characters',
     })
   )(),
   city: isRequired('City'),
   venue: isRequired('Venue'),
   date: isRequired('Date'),
-  time: isRequired('Time')
+  time: isRequired('Time'),
 });
 
 interface DetailParams {
@@ -41,15 +41,11 @@ interface DetailParams {
 
 const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
-  history
+  history,
 }) => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    createActivity,
-    editActivity,
-    submitting,
-    loadActivity
-  } = rootStore.activityStore;
+  const { createActivity, editActivity, submitting, loadActivity } =
+    rootStore.activityStore;
 
   const [activity, setActivity] = useState(new ActivityFormValues());
   const [loading, setLoading] = useState(false);
@@ -58,7 +54,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     if (match.params.id) {
       setLoading(true);
       loadActivity(match.params.id)
-        .then(activity => {
+        .then((activity) => {
           setActivity(new ActivityFormValues(activity));
         })
         .finally(() => setLoading(false));
@@ -73,7 +69,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     if (!activity.id) {
       let newActivity = {
         ...activity,
-        id: uuid()
+        id: uuid(),
       };
       createActivity(newActivity);
     } else {
@@ -91,11 +87,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
             onSubmit={handleFinalFormSubmit}
             render={({ handleSubmit, invalid, pristine }) => (
               <Form onSubmit={handleSubmit} loading={loading}>
-                <Field
-                  name='title'
-                  placeholder='Title'
-                  component={TextInput}
-                />
+                <Field name='title' placeholder='Title' component={TextInput} />
                 <Field
                   name='description'
                   placeholder='Description'
@@ -123,22 +115,14 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                   />
                 </Form.Group>
 
+                <Field component={TextInput} name='city' placeholder='City' />
+                <Field component={TextInput} name='venue' placeholder='Venue' />
                 <Field
-                  component={TextInput}
-                  name='city'
-                  placeholder='City'
-                />
-                <Field
-                  component={TextInput}
-                  name='venue'
-                  placeholder='Venue'
-                />
-                <Field 
                   component={CheckBoxInput}
                   type='checkbox'
                   name='isPrivate'
                   placeholder='isPrivate'
-                  value={activity.isPrivate} />
+                />
                 <Button
                   loading={submitting}
                   disabled={loading || invalid || pristine}
