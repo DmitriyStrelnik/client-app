@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 import { Container } from 'semantic-ui-react';
+import { useCookies } from 'react-cookie';
 import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import { observer } from 'mobx-react-lite';
@@ -17,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import { RootStoreContext } from '../stores/rootStore';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
+import { categories } from '../common/options/categoryOptions';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import CategoryForm from '../../features/activities/form/CategoryForm';
 
@@ -24,6 +26,13 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
   const { setAppLoaded, token, appLoaded } = rootStore.commonStore;
   const { getUser } = rootStore.userStore;
+  const [cookies, setCookie] = useCookies<any>(['categories']);
+
+  useEffect(() => {
+    if (!cookies.categories) {
+      setCookie('categories', categories);
+    }
+  }, [cookies.categories, setCookie]);
 
   useEffect(() => {
     if (token) {
@@ -37,6 +46,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
 
   return (
     <Fragment>
+      
       <ModalContainer />
       <ToastContainer position='bottom-right' />
       <Route exact path='/' component={HomePage} />

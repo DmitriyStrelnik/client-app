@@ -1,23 +1,22 @@
 import React, {
   Fragment,
-  useCallback,
   useContext,
   useEffect,
-  useReducer,
   useState,
 } from 'react';
 import { Menu, Header, Search, Select } from 'semantic-ui-react';
 import { Calendar } from 'react-widgets';
+import { useCookies } from 'react-cookie';
 
 import agent from '../../../app/api/agent';
 import { history } from '../../..';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import { observer } from 'mobx-react-lite';
-import { category } from '../../../app/common/options/categoryOptions';
 
 const ActivityFilters = () => {
   const rootStore = useContext(RootStoreContext);
   const { predicate, setPredicate } = rootStore.activityStore;
+  const [cookies] = useCookies<any>(['categories']);
 
   const [value, setValue] = useState<any>('');
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +26,6 @@ const ActivityFilters = () => {
     setResults([]);
     const delayDebounceFn = setTimeout(async () => {
       if (value !== '') {
-        console.log(value);
         setIsLoading(true);
         const params = new URLSearchParams();
         params.append('name', value);
@@ -83,10 +81,10 @@ const ActivityFilters = () => {
         value={predicate.get('startDate') || new Date()}
       />
       <Select
-        value={predicate.get(category)}
+        value={predicate.get(cookies.categories)}
         onChange={(e, data) => setPredicate('category', data.value)}
         placeholder='Choose category'
-        options={category}
+        options={cookies.categories}
         className='selectCategory'
       />
       <Search

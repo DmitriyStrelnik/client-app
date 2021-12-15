@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Segment, Form, Button, Grid } from 'semantic-ui-react';
+import { useCookies } from 'react-cookie';
 import { ActivityFormValues } from '../../../app/models/activity';
 import { v4 as uuid } from 'uuid';
 import { observer } from 'mobx-react-lite';
@@ -10,7 +11,6 @@ import TextAreaInput from '../../../app/common/form/TextAreaInput';
 import SelectInput from '../../../app/common/form/SelectInput';
 import DateInput from '../../../app/common/form/DateInput';
 import CheckBoxInput from '../../../app/common/form/CheckBoxInput';
-import { category } from '../../../app/common/options/categoryOptions';
 import { combineDateAndTime } from '../../../app/common/util/util';
 import {
   combineValidators,
@@ -46,6 +46,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   const rootStore = useContext(RootStoreContext);
   const { createActivity, editActivity, submitting, loadActivity } =
     rootStore.activityStore;
+    const [cookies] = useCookies<any>(['categories']);
 
   const [activity, setActivity] = useState(new ActivityFormValues());
   const [loading, setLoading] = useState(false);
@@ -65,7 +66,6 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     const dateAndTime = combineDateAndTime(values.date, values.time);
     const { date, time, ...activity } = values;
     activity.date = dateAndTime;
-    console.log(activity);
     if (!activity.id) {
       let newActivity = {
         ...activity,
@@ -96,7 +96,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                 />
                 <Field
                   component={SelectInput}
-                  options={category}
+                  options={cookies.categories}
                   name='category'
                   placeholder='Category'
                 />

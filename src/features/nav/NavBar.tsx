@@ -24,12 +24,14 @@ const NavBar: React.FC = () => {
           />
         </Menu.Item>
         <Menu.Item>
-          <Button
+          {user && user.isAdmin && (
+            <Button
             as={NavLink}
             to='/createCategory'
             positive
-            content='Create Category'
+            content='Create/Edit Category'
           />
+          )}
         </Menu.Item>
         {user && (
           <Menu.Item position='right'>
