@@ -9,13 +9,8 @@ import ActivityFilters from './ActivityFilters';
 
 const ActivityDashboard: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    loadActivities,
-    loadingInitial,
-    setPage,
-    page,
-    totalPages
-  } = rootStore.activityStore;
+  const { loadActivities, loadingInitial, setPage, page, totalPages } =
+    rootStore.activityStore;
   const [loadingNext, setLoadingNext] = useState(false);
 
   const handleGetNext = () => {

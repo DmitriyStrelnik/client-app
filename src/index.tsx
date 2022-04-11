@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
-import {createBrowserHistory} from 'history';
+import { CookiesProvider } from 'react-cookie';
+import { createBrowserHistory } from 'history';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'react-widgets/dist/css/react-widgets.css';
 import './app/layout/styles.css';
@@ -17,7 +18,9 @@ export const history = createBrowserHistory();
 ReactDOM.render(
   <Router history={history}>
     <ScrollToTop>
-      <App />
+      <CookiesProvider>
+        <App />
+      </CookiesProvider>
     </ScrollToTop>
   </Router>,
   document.getElementById('root')

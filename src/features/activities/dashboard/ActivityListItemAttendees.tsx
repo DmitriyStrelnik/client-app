@@ -8,13 +8,13 @@ interface IProps {
 
 const styles = {
   borderColor: 'orange',
-  borderWidth: 2
-}
+  borderWidth: 2,
+};
 
 const ActivityListItemAttendees: React.FC<IProps> = ({ attendees }) => {
   return (
     <List horizontal>
-      {attendees.map(attendee => (
+      {attendees.map((attendee) => (
         <List.Item key={attendee.username}>
           <Popup
             header={attendee.displayName}

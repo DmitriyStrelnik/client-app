@@ -8,7 +8,7 @@ import TextInput from '../../app/common/form/TextInput';
 import TextAreaInput from '../../app/common/form/TextAreaInput';
 
 const validate = combineValidators({
-  displayName: isRequired('displayName')
+  displayName: isRequired('displayName'),
 });
 
 interface IProps {
@@ -37,7 +37,7 @@ const ProfileEditForm: React.FC<IProps> = ({ updateProfile, profile }) => {
             placeholder='Bio'
             value={profile!.bio}
           />
-          <Button 
+          <Button
             loading={submitting}
             floated='right'
             disabled={invalid || pristine}

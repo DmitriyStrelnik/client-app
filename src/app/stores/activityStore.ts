@@ -1,13 +1,12 @@
 import { observable, action, computed, runInAction, reaction } from 'mobx';
 import { SyntheticEvent } from 'react';
-import { IActivity, ICategory } from '../models/activity';
+import { IActivity } from '../models/activity';
 import agent from '../api/agent';
 import { history } from '../..';
 import { toast } from 'react-toastify';
 import { RootStore } from './rootStore';
 import { setActivityProps, createAttendee } from '../common/util/util';
 import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
-import { category } from '../common/options/categoryOptions';
 const LIMIT = 2;
 
 export default class ActivityStore {
@@ -22,7 +21,7 @@ export default class ActivityStore {
         this.activityRegistry.clear();
         this.loadActivities();
       }
-    )
+    );
   }
 
   @observable activityRegistry = new Map();
@@ -36,12 +35,21 @@ export default class ActivityStore {
   @observable page = 0;
   @observable predicate = new Map();
 
-  @action setPredicate = (predicate: string, value: string | number | boolean | (string | number | boolean)[] | Date | undefined) => {
+  @action setPredicate = (
+    predicate: string,
+    value:
+      | string
+      | number
+      | boolean
+      | (string | number | boolean)[]
+      | Date
+      | undefined
+  ) => {
     this.predicate.clear();
     if (predicate !== 'all') {
       this.predicate.set(predicate, value);
     }
-  }
+  };
 
   @computed get axiosParams() {
     const params = new URLSearchParams();
@@ -49,11 +57,11 @@ export default class ActivityStore {
     params.append('offset', `${this.page ? this.page * LIMIT : 0}`);
     this.predicate.forEach((value, key) => {
       if (key === 'startDate') {
-        params.append(key, value.toISOString())
+        params.append(key, value.toISOString());
       } else {
-        params.append(key, value)
+        params.append(key, value);
       }
-    })
+    });
     return params;
   }
 
@@ -63,12 +71,12 @@ export default class ActivityStore {
 
   @action setPage = (page: number) => {
     this.page = page;
-  }
+  };
 
   @action createHubConnection = () => {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl('http://localhost:5000/chat', {
-        accessTokenFactory: () => this.rootStore.commonStore.token!
+        accessTokenFactory: () => this.rootStore.commonStore.token!,
       })
       .configureLogging(LogLevel.Information)
       .build();
@@ -76,27 +84,27 @@ export default class ActivityStore {
     this.hubConnection
       .start()
       .then(() => console.log(this.hubConnection!.state))
-      .catch(error => console.log('Error establishing connection: ', error));
+      .catch((error) => console.log('Error establishing connection: ', error));
 
-    this.hubConnection.on('ReceiveComment', comment => {
+    this.hubConnection.on('ReceiveComment', (comment) => {
       runInAction(() => {
-        this.activity!.comments.push(comment)
-      })
-    })
+        this.activity!.comments.push(comment);
+      });
+    });
   };
 
   @action stopHubConnection = () => {
-    this.hubConnection!.stop()
-  }
+    this.hubConnection!.stop();
+  };
 
   @action addComment = async (values: any) => {
     values.activityId = this.activity!.id;
     try {
-      await this.hubConnection!.invoke('SendComment', values)
+      await this.hubConnection!.invoke('SendComment', values);
     } catch (error) {
       console.log(error);
     }
-  } 
+  };
 
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(
@@ -109,16 +117,13 @@ export default class ActivityStore {
       (a, b) => a.date.getTime() - b.date.getTime()
     );
     return Object.entries(
-      sortedActivities.reduce(
-        (activities, activity) => {
-          const date = activity.date.toISOString().split('T')[0];
-          activities[date] = activities[date]
-            ? [...activities[date], activity]
-            : [activity];
-          return activities;
-        },
-        {} as { [key: string]: IActivity[] }
-      )
+      sortedActivities.reduce((activities, activity) => {
+        const date = activity.date.toISOString().split('T')[0];
+        activities[date] = activities[date]
+          ? [...activities[date], activity]
+          : [activity];
+        return activities;
+      }, {} as { [key: string]: IActivity[] })
     );
   }
 
@@ -126,9 +131,9 @@ export default class ActivityStore {
     this.loadingInitial = true;
     try {
       const activitiesEnvelope = await agent.Activities.list(this.axiosParams);
-      const {activities, activityCount} = activitiesEnvelope;
+      const { activities, activityCount } = activitiesEnvelope;
       runInAction('loading activities', () => {
-        activities.forEach(activity => {
+        activities.forEach((activity) => {
           setActivityProps(activity, this.rootStore.userStore.user!);
           this.activityRegistry.set(activity.id, activity);
         });
@@ -200,17 +205,6 @@ export default class ActivityStore {
     }
   };
 
-  @action createCategory  = async (newCategory: ICategory) =>
-  {
-    
-    category.push(newCategory)
-  }
-  @action editCategory  = async (newCategory: ICategory) =>
-  {
-    
-    
-  }
-
   @action editActivity = async (activity: IActivity) => {
     this.submitting = true;
     try {
@@ -281,7 +275,7 @@ export default class ActivityStore {
       runInAction(() => {
         if (this.activity) {
           this.activity.attendees = this.activity.attendees.filter(
-            a => a.username !== this.rootStore.userStore.user!.username
+            (a) => a.username !== this.rootStore.userStore.user!.username
           );
           this.activity.isGoing = false;
           this.activityRegistry.set(this.activity.id, this.activity);

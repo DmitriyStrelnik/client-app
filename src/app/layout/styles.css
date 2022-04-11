@@ -40,4 +40,36 @@ body {
   font-weight: normal;
 }
 
+.selectCategory {
+  margin: 14px 0;
+  width: 100%;
+}
+
+.searchActivity {
+  width: 100%;
+}
+
+.searchActivity .input {
+  width: 100%;    
+}
+
+.categoryList {
+  /* background-color: aliceblue; */
+}
+
+.categoryList > .item.categoryListItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.categoryList > .item.categoryListItem .categoryListItemSubtext {
+  font-size: 12px;
+  color: gray;
+  margin-left: 8px;
+}
+
+.categoryList > .item.categoryListItem .content:last-of-type {
+  margin-left: auto;
+}
 /*end home page styles*/

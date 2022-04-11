@@ -2,10 +2,15 @@ export interface IActivitiesEnvelope {
   activities: IActivity[];
   activityCount: number;
 }
-export interface ICategory{
+export interface ICategory {
   key: string;
   text: string;
   value: string;
+}
+export class CategoryFormValues implements ICategory {
+  key: string = '';
+  text: string = '';
+  value: string = '';
 }
 export interface IActivity {
   id: string;

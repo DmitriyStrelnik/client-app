@@ -10,7 +10,7 @@ import ErrorMessage from '../../app/common/form/ErrorMessage';
 
 const validate = combineValidators({
   email: isRequired('Email'),
-  password: isRequired('Password')
+  password: isRequired('Password'),
 });
 
 const LoginForm = () => {
@@ -19,8 +19,8 @@ const LoginForm = () => {
   return (
     <FinalForm
       onSubmit={(values: IUserFormValues) =>
-        login(values).catch(error => ({
-          [FORM_ERROR]: error
+        login(values).catch((error) => ({
+          [FORM_ERROR]: error,
         }))
       }
       validate={validate}
@@ -30,7 +30,7 @@ const LoginForm = () => {
         submitError,
         invalid,
         pristine,
-        dirtySinceLastSubmit
+        dirtySinceLastSubmit,
       }) => (
         <Form onSubmit={handleSubmit} error>
           <Header

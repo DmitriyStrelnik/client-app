@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 import { Container } from 'semantic-ui-react';
+import { useCookies } from 'react-cookie';
 import NavBar from '../../features/nav/NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import { observer } from 'mobx-react-lite';
@@ -7,36 +8,45 @@ import {
   Route,
   withRouter,
   RouteComponentProps,
-  Switch
+  Switch,
 } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import ActivityForm from '../../features/activities/form/ActivityForm';
 import ActivityDetails from '../../features/activities/details/ActivityDetails';
 import NotFound from './NotFound';
-import {ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { RootStoreContext } from '../stores/rootStore';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
+import { categories } from '../common/options/categoryOptions';
 import ProfilePage from '../../features/profiles/ProfilePage';
 import CategoryForm from '../../features/activities/form/CategoryForm';
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
-  const {setAppLoaded, token, appLoaded} = rootStore.commonStore;
-  const {getUser} = rootStore.userStore;
+  const { setAppLoaded, token, appLoaded } = rootStore.commonStore;
+  const { getUser } = rootStore.userStore;
+  const [cookies, setCookie] = useCookies<any>(['categories']);
+
+  useEffect(() => {
+    if (!cookies.categories) {
+      setCookie('categories', categories);
+    }
+  }, [cookies.categories, setCookie]);
 
   useEffect(() => {
     if (token) {
-      getUser().finally(() => setAppLoaded())
+      getUser().finally(() => setAppLoaded());
     } else {
       setAppLoaded();
     }
-  }, [getUser, setAppLoaded, token])
+  }, [getUser, setAppLoaded, token]);
 
-  if (!appLoaded)  return <LoadingComponent content='Loading app...' />
+  if (!appLoaded) return <LoadingComponent content='Loading app...' />;
 
   return (
     <Fragment>
+      
       <ModalContainer />
       <ToastContainer position='bottom-right' />
       <Route exact path='/' component={HomePage} />

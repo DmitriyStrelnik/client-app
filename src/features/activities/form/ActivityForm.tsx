@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Segment, Form, Button, Grid } from 'semantic-ui-react';
+import { useCookies } from 'react-cookie';
 import { ActivityFormValues } from '../../../app/models/activity';
 import { v4 as uuid } from 'uuid';
 import { observer } from 'mobx-react-lite';
@@ -10,13 +11,12 @@ import TextAreaInput from '../../../app/common/form/TextAreaInput';
 import SelectInput from '../../../app/common/form/SelectInput';
 import DateInput from '../../../app/common/form/DateInput';
 import CheckBoxInput from '../../../app/common/form/CheckBoxInput';
-import { category } from '../../../app/common/options/categoryOptions';
 import { combineDateAndTime } from '../../../app/common/util/util';
 import {
   combineValidators,
   isRequired,
   composeValidators,
-  hasLengthGreaterThan
+  hasLengthGreaterThan,
 } from 'revalidate';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 
@@ -26,13 +26,13 @@ const validate = combineValidators({
   description: composeValidators(
     isRequired('Description'),
     hasLengthGreaterThan(4)({
-      message: 'Description needs to be at least 5 characters'
+      message: 'Description needs to be at least 5 characters',
     })
   )(),
   city: isRequired('City'),
   venue: isRequired('Venue'),
   date: isRequired('Date'),
-  time: isRequired('Time')
+  time: isRequired('Time'),
 });
 
 interface DetailParams {
@@ -41,15 +41,12 @@ interface DetailParams {
 
 const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
-  history
+  history,
 }) => {
   const rootStore = useContext(RootStoreContext);
-  const {
-    createActivity,
-    editActivity,
-    submitting,
-    loadActivity
-  } = rootStore.activityStore;
+  const { createActivity, editActivity, submitting, loadActivity } =
+    rootStore.activityStore;
+    const [cookies] = useCookies<any>(['categories']);
 
   const [activity, setActivity] = useState(new ActivityFormValues());
   const [loading, setLoading] = useState(false);
@@ -58,7 +55,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     if (match.params.id) {
       setLoading(true);
       loadActivity(match.params.id)
-        .then(activity => {
+        .then((activity) => {
           setActivity(new ActivityFormValues(activity));
         })
         .finally(() => setLoading(false));
@@ -69,11 +66,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
     const dateAndTime = combineDateAndTime(values.date, values.time);
     const { date, time, ...activity } = values;
     activity.date = dateAndTime;
-    console.log(activity);
     if (!activity.id) {
       let newActivity = {
         ...activity,
-        id: uuid()
+        id: uuid(),
       };
       createActivity(newActivity);
     } else {
@@ -91,11 +87,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
             onSubmit={handleFinalFormSubmit}
             render={({ handleSubmit, invalid, pristine }) => (
               <Form onSubmit={handleSubmit} loading={loading}>
-                <Field
-                  name='title'
-                  placeholder='Title'
-                  component={TextInput}
-                />
+                <Field name='title' placeholder='Title' component={TextInput} />
                 <Field
                   name='description'
                   placeholder='Description'
@@ -104,7 +96,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                 />
                 <Field
                   component={SelectInput}
-                  options={category}
+                  options={cookies.categories}
                   name='category'
                   placeholder='Category'
                 />
@@ -123,22 +115,14 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                   />
                 </Form.Group>
 
+                <Field component={TextInput} name='city' placeholder='City' />
+                <Field component={TextInput} name='venue' placeholder='Venue' />
                 <Field
-                  component={TextInput}
-                  name='city'
-                  placeholder='City'
-                />
-                <Field
-                  component={TextInput}
-                  name='venue'
-                  placeholder='Venue'
-                />
-                <Field 
                   component={CheckBoxInput}
                   type='checkbox'
                   name='isPrivate'
                   placeholder='isPrivate'
-                  value={activity.isPrivate} />
+                />
                 <Button
                   loading={submitting}
                   disabled={loading || invalid || pristine}
